@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFF1F4">
+<title>恋爱小动物图鉴 · 你是哪只恋爱小动物？</title>
+<style>
+:root{
+  --ink:#3E3040;
+  --ink-soft:#7A6A76;
+  --pink:#FF8FA3;
+  --pink-2:#FFB3C6;
+  --pink-soft:#FFE7ED;
+  --cream:#FFF8F6;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,-apple-system,sans-serif;
+  color:var(--ink);
+  background:var(--cream);
+  min-height:100vh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:-2;
+  background:
+    radial-gradient(60% 40% at 12% 6%, #FFE3EC 0%, rgba(255,227,236,0) 62%),
+    radial-gradient(55% 40% at 88% 12%, #E9E0FF 0%, rgba(233,224,255,0) 62%),
+    radial-gradient(70% 45% at 50% 100%, #FFEFE2 0%, rgba(255,239,226,0) 62%),
+    #FFF8F6;
+}
+.floaties{position:fixed;inset:0;pointer-events:none;z-index:-1;overflow:hidden;}
+.f{position:absolute;font-size:20px;opacity:.5;color:#FFB3C6;animation:floaty 9s ease-in-out infinite;}
+.f1{left:7%;top:13%;}
+.f2{right:9%;top:19%;font-size:15px;color:#C9B6E4;animation-delay:1.4s;}
+.f3{left:14%;top:56%;font-size:14px;color:#FFC9A8;animation-delay:2.6s;}
+.f4{right:12%;top:62%;font-size:17px;color:#A9B6E8;animation-delay:.8s;}
+.f5{left:46%;top:88%;font-size:13px;color:#FFB3C6;animation-delay:3.2s;}
+@keyframes floaty{0%,100%{transform:translateY(0) rotate(0);}50%{transform:translateY(-16px) rotate(10deg);}}
+
+.wrap{max-width:520px;margin:0 auto;padding:22px 18px 46px;position:relative;}
+
+.page{display:none;}
+.page.active{display:block;animation:fadeUp .45s cubic-bezier(.22,.8,.35,1) both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+
+/* ---------- 通用按钮 ---------- */
+.btn{
+  border:none;border-radius:999px;font-size:16px;font-weight:700;
+  padding:15px 26px;cursor:pointer;font-family:inherit;line-height:1;
+  transition:transform .14s ease, box-shadow .22s ease, opacity .2s;
+  display:inline-flex;align-items:center;justify-content:center;
+}
+.btn:active{transform:scale(.965);}
+.btn-primary{
+  background:linear-gradient(135deg,#FF9DB0,#FF7E96);
+  color:#fff;box-shadow:0 12px 26px rgba(255,126,150,.36);
+  width:100%;
+}
+.btn-ghost{
+  background:#fff;color:#7A6A76;border:1.6px solid #FFE0E7;width:100%;
+  box-shadow:0 4px 14px rgba(255,180,200,.16);
+}
+.btn-ghost:disabled{opacity:.38;box-shadow:none;}
+.btn-text{
+  background:none;color:#A08E9C;font-size:14px;padding:10px;width:100%;font-weight:600;
+}
+
+/* ---------- 首页 ---------- */
+.home-card{
+  background:rgba(255,255,255,.8);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border-radius:34px;
+  padding:26px 22px 24px;
+  box-shadow:0 22px 60px rgba(255,143,163,.2), 0 1px 0 #fff inset;
+  border:1px solid rgba(255,255,255,.95);
+  text-align:center;
+}
+.home-badge{
+  display:inline-block;padding:7px 16px;border-radius:999px;
+  background:#FFF0F4;color:#FF7E96;font-size:12.5px;font-weight:800;letter-spacing:1.2px;
+  margin-bottom:16px;
+}
+.home-title{
+  font-size:29px;line-height:1.35;margin:0 0 12px;font-weight:800;letter-spacing:.5px;
+}
+.home-title span{
+  background:linear-gradient(120deg,#FF7E96,#C9A6F0 70%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.home-sub{
+  font-size:14px;line-height:1.75;color:#8A7A88;margin:0 0 6px;font-weight:500;
+}
+.hero{
+  position:relative;height:186px;margin:4px 0 6px;
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-glow{
+  position:absolute;width:212px;height:212px;border-radius:50%;
+  background:radial-gradient(circle,#FFE1EA 0%,#FFF2F6 55%,rgba(255,255,255,0) 72%);
+}
+.hero-animal{position:absolute;will-change:transform;}
+.hero-animal svg{width:100%;height:100%;display:block;filter:drop-shadow(0 10px 18px rgba(255,143,163,.26));}
+.a1{width:82px;height:82px;transform:translate(-80px,12px) rotate(-9deg);animation:sway1 6s ease-in-out infinite;}
+.a2{width:114px;height:114px;transform:translate(0,-12px);z-index:2;animation:sway2 6.6s ease-in-out infinite;}
+.a3{width:82px;height:82px;transform:translate(80px,12px) rotate(9deg);animation:sway3 6.2s ease-in-out infinite;}
+@keyframes sway1{0%,100%{transform:translate(-80px,12px) rotate(-9deg);}50%{transform:translate(-80px,2px) rotate(-4deg);}}
+@keyframes sway2{0%,100%{transform:translate(0,-12px);}50%{transform:translate(0,-22px);}}
+@keyframes sway3{0%,100%{transform:translate(80px,12px) rotate(9deg);}50%{transform:translate(80px,2px) rotate(4deg);}}
+.home-meta{
+  display:flex;justify-content:center;gap:10px;margin:6px 0 20px;flex-wrap:wrap;
+}
+.home-meta span{
+  font-size:12.5px;color:#A08E9C;background:#FFF4F7;border-radius:999px;
+  padding:7px 14px;font-weight:700;
+}
+.home-tip{font-size:12.5px;color:#B6A6B2;margin:14px 0 0;line-height:1.7;}
+
+/* ---------- 答题页 ---------- */
+.quiz-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.icon-btn{
+  width:38px;height:38px;border-radius:50%;border:none;background:#fff;
+  color:#B39FAC;font-size:20px;line-height:1;cursor:pointer;
+  box-shadow:0 4px 12px rgba(200,160,190,.18);font-family:inherit;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .14s;
+}
+.icon-btn:active{transform:scale(.92);}
+.quiz-count{font-size:14px;font-weight:800;color:#B39FAC;letter-spacing:1px;}
+.quiz-count b{color:#FF7E96;font-size:17px;}
+.progress{height:10px;border-radius:999px;background:#FFE7ED;overflow:hidden;margin-bottom:20px;}
+.progress-fill{
+  height:100%;width:0;border-radius:999px;
+  background:linear-gradient(90deg,#FFC1D0,#FF8FA3);
+  transition:width .4s cubic-bezier(.22,.8,.35,1);
+}
+.q-card{
+  background:#fff;border-radius:28px;padding:24px 20px 18px;
+  box-shadow:0 16px 44px rgba(210,160,190,.16);
+  border:1px solid #FFF1F5;
+  margin-bottom:16px;
+}
+.q-index{
+  display:inline-block;font-size:12px;font-weight:800;letter-spacing:2px;
+  color:#FF8FA3;background:#FFF1F5;border-radius:999px;padding:5px 12px;margin-bottom:12px;
+}
+.q-title{font-size:18px;line-height:1.6;margin:0 0 18px;font-weight:800;letter-spacing:.3px;}
+.options{display:flex;flex-direction:column;}
+.option{
+  display:flex;gap:11px;align-items:flex-start;width:100%;
+  background:#FFFCFD;border:2px solid #FFEDF2;border-radius:20px;
+  padding:15px 16px;margin-bottom:11px;cursor:pointer;
+  font-size:15px;line-height:1.55;text-align:left;color:#5A4A56;
+  font-family:inherit;font-weight:500;
+  transition:all .18s ease;
+}
+.option:last-child{margin-bottom:0;}
+.option:active{transform:scale(.985);}
+.option.selected{
+  border-color:#FF9DB0;color:#3E3040;font-weight:700;
+  background:linear-gradient(135deg,#FFF6F9,#FFEAF1);
+  box-shadow:0 8px 22px rgba(255,157,176,.24);
+}
+.bullet{
+  flex:0 0 auto;width:24px;height:24px;border-radius:50%;
+  background:#FFF0F4;color:#FF8FA3;font-size:11.5px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;margin-top:1px;
+  transition:all .18s;
+}
+.option.selected .bullet{background:#FF8FA3;color:#fff;}
+.opt-text{flex:1;}
+.quiz-actions{display:flex;gap:12px;}
+.quiz-actions .btn{flex:1;}
+.quiz-actions .btn-primary{flex:1.6;}
+
+/* ---------- 结果页 ---------- */
+#result{--accent:#FFB3C6;--accent-soft:#FFE6ED;}
+.result-card{
+  background:#fff;border-radius:32px;overflow:hidden;
+  box-shadow:0 22px 60px rgba(190,150,180,.2);
+  border:1px solid #fff;
+}
+.result-top{
+  position:relative;
+  background:linear-gradient(165deg,var(--accent) 0%,var(--accent-soft) 62%,#fff 100%);
+  padding:20px 22px 26px;text-align:center;
+}
+.result-top::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(50% 45% at 50% 8%, rgba(255,255,255,.65) 0%, rgba(255,255,255,0) 70%);
+}
+.result-animal{
+  width:158px;height:158px;margin:0 auto 2px;position:relative;z-index:1;
+  filter:drop-shadow(0 12px 22px rgba(120,80,110,.14));
+  animation:pop .55s cubic-bezier(.2,1.3,.4,1) both;
+}
+.result-animal svg{width:100%;height:100%;display:block;}
+@keyframes pop{from{opacity:0;transform:scale(.72) translateY(10px);}to{opacity:1;transform:none;}}
+.result-badge{
+  position:relative;z-index:1;
+  display:inline-block;padding:7px 17px;border-radius:999px;
+  background:rgba(255,255,255,.82);
+  font-size:12.5px;font-weight:800;color:#6B5A66;letter-spacing:.8px;
+  margin-bottom:10px;box-shadow:0 4px 12px rgba(160,120,150,.12);
+}
+.result-name{
+  position:relative;z-index:1;
+  font-size:23px;margin:0 0 10px;font-weight:800;letter-spacing:.6px;line-height:1.35;
+}
+.result-slogan{
+  position:relative;z-index:1;
+  font-size:14.5px;color:#6B5A66;margin:0;line-height:1.7;font-weight:700;
+}
+.result-main{padding:20px 20px 8px;}
+.block{margin-bottom:22px;}
+.block-title{
+  font-size:13.5px;font-weight:800;color:var(--accent);margin:0 0 9px;letter-spacing:.8px;
+}
+.block p{font-size:14.5px;line-height:1.85;color:#5F4F5B;margin:0;}
+.chips{display:flex;flex-wrap:wrap;gap:8px;}
+.chip{
+  font-size:13px;font-weight:700;color:#6B5A66;
+  background:var(--accent-soft);border-radius:999px;padding:8px 14px;
+}
+.grid2{display:grid;grid-template-columns:1fr;gap:12px;}
+.mini{
+  background:#FFFAFC;border:1.5px solid #FFF0F4;border-radius:20px;padding:14px 15px;
+}
+.mini-title{font-size:13px;font-weight:800;color:#8A7A88;margin-bottom:7px;}
+.mini p{font-size:13.8px;line-height:1.8;color:#5F4F5B;margin:0;}
+.advice{
+  background:linear-gradient(135deg,#FFF7FA,#FFF1F5);
+  border-radius:22px;padding:16px 17px;border:1.5px dashed var(--accent);
+}
+.advice p{font-size:14px;}
+.result-actions{display:flex;flex-direction:column;gap:11px;margin-top:20px;}
+
+/* ---------- 弹窗 ---------- */
+.modal{
+  position:fixed;inset:0;background:rgba(60,40,55,.62);
+  display:none;align-items:center;justify-content:center;
+  padding:20px;z-index:99;-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);
+}
+.modal.show{display:flex;animation:fadeIn .25s ease both;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.modal-inner{
+  background:#fff;border-radius:26px;padding:16px 16px 18px;
+  max-width:340px;width:100%;text-align:center;
+  animation:pop .3s cubic-bezier(.2,1.2,.4,1) both;
+}
+.modal-inner img{width:100%;border-radius:16px;display:block;}
+.modal-tip{font-size:13px;color:#8A7A88;margin:12px 0 14px;line-height:1.6;}
+
+/* ---------- Toast ---------- */
+#toast{
+  position:fixed;left:50%;bottom:52px;transform:translate(-50%,14px);
+  background:rgba(62,48,64,.92);color:#fff;font-size:13.5px;font-weight:600;
+  padding:12px 20px;border-radius:999px;opacity:0;pointer-events:none;
+  transition:all .28s ease;z-index:200;max-width:86vw;text-align:center;line-height:1.5;
+}
+#toast.show{opacity:1;transform:translate(-50%,0);}
+
+@media (min-width:560px){
+  .home-title{font-size:33px;}
+  .grid2{grid-template-columns:1fr 1fr;}
+  .q-title{font-size:19px;}
+}
+</style>
+</head>
+<body>
+
+<div class="floaties" aria-hidden="true">
+  <span class="f f1">♡</span>
+  <span class="f f2">✦</span>
+  <span class="f f3">♡</span>
+  <span class="f f4">✧</span>
+  <span class="f f5">♡</span>
+</div>
+
+<main class="wrap">
+
+  <!-- ============ 首页 ============ -->
+  <section class="page active" id="home">
+    <div class="home-card">
+      <div class="home-badge">恋爱小动物图鉴</div>
+      <h1 class="home-title">你是哪只<br><span>恋爱小动物</span>？</h1>
+      <p class="home-sub">10 种恋爱人格 × 15 道题<br>3 分钟，测出你在感情里的真实样子</p>
+
+      <div class="hero">
+        <div class="hero-glow"></div>
+        <div class="hero-animal a1" id="hero-a1"></div>
+        <div class="hero-animal a2" id="hero-a2"></div>
+        <div class="hero-animal a3" id="hero-a3"></div>
+      </div>
+
+      <div class="home-meta">
+        <span>15 道题</span>
+        <span>约 2 分钟</span>
+        <span>10 种结果</span>
+      </div>
+
+      <button class="btn btn-primary" id="btn-start">开始测试</button>
+      <p class="home-tip">测完可以保存成图片，发给那个让你心动的人</p>
+    </div>
+  </section>
+
+  <!-- ============ 答题页 ============ -->
+  <section class="page" id="quiz">
+    <div class="quiz-top">
+      <button class="icon-btn" id="btn-home" aria-label="返回首页">‹</button>
+      <div class="quiz-count"><b id="cur-num">1</b> / <span id="total-num">15</span></div>
+      <div style="width:38px"></div>
+    </div>
+    <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
+
+    <div class="q-card">
+      <div class="q-index" id="q-index">Q1</div>
+      <h2 class="q-title" id="q-title">题目加载中…</h2>
+      <div class="options" id="options"></div>
+    </div>
+
+    <div class="quiz-actions">
+      <button class="btn btn-ghost" id="btn-prev">上一题</button>
+      <button class="btn btn-primary" id="btn-next" disabled>下一题</button>
+    </div>
+  </section>
+
+  <!-- ============ 结果页 ============ -->
+  <section class="page" id="result">
+    <div class="result-card">
+      <div class="result-top">
+        <div class="result-animal" id="result-animal"></div>
+        <div class="result-badge" id="result-badge">专属标签</div>
+        <h1 class="result-name" id="result-name"></h1>
+        <p class="result-slogan" id="result-slogan"></p>
+      </div>
+
+      <div class="result-main">
+        <div class="block">
+          <h3 class="block-title">✦ 关于你的恋爱人格</h3>
+          <p id="result-desc"></p>
+        </div>
+
+        <div class="block">
+          <h3 class="block-title">✧ 你的典型表现</h3>
+          <div class="chips" id="result-traits"></div>
+        </div>
+
+        <div class="grid2" style="margin-bottom:22px;">
+          <div class="mini">
+            <div class="mini-title">💗 可爱之处</div>
+            <p id="result-light"></p>
+          </div>
+          <div class="mini">
+            <div class="mini-title">🌙 小小盲点</div>
+            <p id="result-shadow"></p>
+          </div>
+        </div>
+
+        <div class="block advice">
+          <h3 class="block-title">✦ 给你的恋爱建议</h3>
+          <p id="result-advice"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="result-actions">
+      <button class="btn btn-primary" id="btn-save">保存结果卡片</button>
+      <button class="btn btn-ghost" id="btn-share">分享给朋友</button>
+      <button class="btn btn-text" id="btn-retry">重新测一次</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- 图片预览弹窗 -->
+<div class="modal" id="modal">
+  <div class="modal-inner">
+    <img id="modal-img" alt="结果卡片">
+    <p class="modal-tip" id="modal-tip">长按图片，选择「保存图片」即可保存到相册</p>
+    <button class="btn btn-primary" id="modal-close">好了</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ==================================================
+   一、视觉素材：内联 SVG 小动物插画
+   ================================================== */
+const EYES = `
+<ellipse cx="79" cy="107" rx="7.5" ry="9.5" fill="#3E3040"/>
+<ellipse cx="121" cy="107" rx="7.5" ry="9.5" fill="#3E3040"/>
+<circle cx="81.6" cy="103.4" r="2.9" fill="#FFFFFF"/>
+<circle cx="123.6" cy="103.4" r="2.9" fill="#FFFFFF"/>`;
+
+const BLUSH = `
+<ellipse cx="63" cy="130" rx="13" ry="7.5" fill="#FF8FA3" opacity="0.34"/>
+<ellipse cx="137" cy="130" rx="13" ry="7.5" fill="#FF8FA3" opacity="0.34"/>`;
+
+const MOUTH = `<path d="M90 126 q10 12 20 0" stroke="#3E3040" stroke-width="3.6" fill="none" stroke-linecap="round"/>`;
+
+function buildSVG(o){
+  return `<svg viewBox="0 0 200 200" width="200" height="200" xmlns="http://www.w3.org/2000/svg">`
+    + (o.back || '')
+    + `<circle cx="100" cy="112" r="60" fill="${o.main}"/>`
+    + (o.extra || '')
+    + (o.eyes || EYES)
+    + (o.blush || BLUSH)
+    + (o.mouth || MOUTH)
+    + (o.front || '')
+    + `</svg>`;
+}
+
+const SVGS = {
+  cat: buildSVG({
+    main:'#FFB3C6',
+    back:`<path d="M52 74 L42 20 L94 52 Z" fill="#FFB3C6"/>
+          <path d="M148 74 L158 20 L106 52 Z" fill="#FFB3C6"/>
+          <path d="M58 70 L52 34 L88 56 Z" fill="#FFD6E1"/>
+          <path d="M142 70 L148 34 L112 56 Z" fill="#FFD6E1"/>`,
+    front:`<g stroke="#FF8FA3" stroke-width="3" stroke-linecap="round" opacity=".85">
+          <path d="M36 116 L60 120"/><path d="M36 134 L60 131"/>
+          <path d="M164 116 L140 120"/><path d="M164 134 L140 131"/></g>`
+  }),
+
+  fox: buildSVG({
+    main:'#FFAE7E',
+    back:`<path d="M50 70 L36 14 L96 48 Z" fill="#FFAE7E"/>
+          <path d="M150 70 L164 14 L104 48 Z" fill="#FFAE7E"/>
+          <path d="M57 66 L47 30 L88 54 Z" fill="#FFE3D0"/>
+          <path d="M143 66 L153 30 L112 54 Z" fill="#FFE3D0"/>`,
+    extra:`<ellipse cx="100" cy="139" rx="31" ry="22" fill="#FFF4EC"/>`,
+    mouth:`<ellipse cx="100" cy="126" rx="7" ry="5.5" fill="#3E3040"/>
+           <path d="M100 132 v6" stroke="#3E3040" stroke-width="3.4" stroke-linecap="round"/>
+           <path d="M100 138 q-9 9 -16 1" stroke="#3E3040" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+           <path d="M100 138 q9 9 16 1" stroke="#3E3040" stroke-width="3.4" fill="none" stroke-linecap="round"/>`
+  }),
+
+  dog: buildSVG({
+    main:'#FFCB6B',
+    back:`<ellipse cx="46" cy="116" rx="19" ry="36" fill="#E9A93F" transform="rotate(-12 46 116)"/>
+          <ellipse cx="154" cy="116" rx="19" ry="36" fill="#E9A93F" transform="rotate(12 154 116)"/>`,
+    extra:`<ellipse cx="100" cy="137" rx="27" ry="20" fill="#FFF6E4"/>`,
+    mouth:`<ellipse cx="100" cy="124" rx="7.5" ry="6" fill="#3E3040"/>
+           <path d="M100 130 v6" stroke="#3E3040" stroke-width="3.4" stroke-linecap="round"/>
+           <path d="M100 136 q-9 9 -16 1" stroke="#3E3040" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+           <path d="M100 136 q9 9 16 1" stroke="#3E3040" stroke-width="3.4" fill="none" stroke-linecap="round"/>`
+  }),
+
+  hedgehog: buildSVG({
+    main:'#BFA4E8',
+    back:`<g fill="#A98BD8">
+            <path d="M62 70 L48 24 L90 54 Z"/>
+            <path d="M100 58 L100 10 L126 46 Z"/>
+            <path d="M138 70 L152 24 L110 54 Z"/>
+          </g>`,
+    mouth:`<ellipse cx="100" cy="126" rx="6.5" ry="5" fill="#3E3040"/>
+           <path d="M90 136 q10 10 20 0" stroke="#3E3040" stroke-width="3.4" fill="none" stroke-linecap="round"/>`
+  }),
+
+  sloth: buildSVG({
+    main:'#C9AA85',
+    back:`<circle cx="52" cy="84" r="19" fill="#B3926E"/>
+          <circle cx="148" cy="84" r="19" fill="#B3926E"/>`,
+    extra:`<ellipse cx="79" cy="107" rx="21" ry="17" fill="#8C6B4B" opacity=".45"/>
+           <ellipse cx="121" cy="107" rx="21" ry="17" fill="#8C6B4B" opacity=".45"/>`,
+    mouth:`<ellipse cx="100" cy="126" rx="8" ry="6" fill="#3E3040"/>
+           <path d="M90 138 q10 10 20 0" stroke="#3E3040" stroke-width="3.4" fill="none" stroke-linecap="round"/>`
+  }),
+
+  peacock: buildSVG({
+    main:'#8FD3E8',
+    back:`<g stroke="#5BBFD8" stroke-width="5" stroke-linecap="round" fill="none">
+            <path d="M100 58 L100 22"/><path d="M100 60 L76 30"/><path d="M100 60 L124 30"/>
+          </g>
+          <circle cx="100" cy="20" r="6" fill="#5BBFD8"/>
+          <circle cx="76" cy="28" r="5" fill="#5BBFD8"/>
+          <circle cx="124" cy="28" r="5" fill="#5BBFD8"/>`,
+    mouth:`<path d="M100 118 L116 132 L100 146 Z" fill="#F5A93F"/>`
+  }),
+
+  owl: buildSVG({
+    main:'#A9B6E8',
+    back:`<path d="M64 66 L50 22 L92 52 Z" fill="#A9B6E8"/>
+          <path d="M136 66 L150 22 L108 52 Z" fill="#A9B6E8"/>`,
+    eyes:`<circle cx="79" cy="107" r="24" fill="#F4F1FF"/>
+          <circle cx="121" cy="107" r="24" fill="#F4F1FF"/>
+          <circle cx="79" cy="107" r="11" fill="#3E3040"/>
+          <circle cx="121" cy="107" r="11" fill="#3E3040"/>
+          <circle cx="82.5" cy="103" r="4" fill="#FFFFFF"/>
+          <circle cx="124.5" cy="103" r="4" fill="#FFFFFF"/>`,
+    mouth:`<path d="M100 118 L110 132 L90 132 Z" fill="#F5A93F"/>`
+  }),
+
+  bee: buildSVG({
+    main:'#FFD95E',
+    back:`<ellipse cx="42" cy="98" rx="19" ry="27" fill="#FFFBEA" transform="rotate(-22 42 98)"/>
+          <ellipse cx="158" cy="98" rx="19" ry="27" fill="#FFFBEA" transform="rotate(22 158 98)"/>`,
+    front:`<g stroke="#4A3A44" stroke-width="3.6" fill="none" stroke-linecap="round">
+            <path d="M80 58 Q72 32 58 28"/><path d="M120 58 Q128 32 142 28"/>
+          </g>
+          <circle cx="58" cy="28" r="5.5" fill="#4A3A44"/>
+          <circle cx="142" cy="28" r="5.5" fill="#4A3A44"/>`
+  }),
+
+  penguin: buildSVG({
+    main:'#8FA9BD',
+    extra:`<ellipse cx="100" cy="128" rx="44" ry="41" fill="#FFF8F3"/>`,
+    mouth:`<path d="M100 122 L114 133 L100 145 L86 133 Z" fill="#F5A93F"/>`
+  }),
+
+  wolf: buildSVG({
+    main:'#A39CBF',
+    back:`<path d="M52 70 L40 16 L94 50 Z" fill="#A39CBF"/>
+          <path d="M148 70 L160 16 L106 50 Z" fill="#A39CBF"/>
+          <path d="M58 66 L50 30 L88 54 Z" fill="#D5D0E8"/>
+          <path d="M142 66 L150 30 L112 54 Z" fill="#D5D0E8"/>`,
+    extra:`<ellipse cx="100" cy="138" rx="29" ry="21" fill="#EDEAF6"/>`,
+    mouth:`<path d="M66 86 L88 95" stroke="#4A3A44" stroke-width="4" stroke-linecap="round"/>
+           <path d="M134 86 L112 95" stroke="#4A3A44" stroke-width="4" stroke-linecap="round"/>
+           <ellipse cx="100" cy="125" rx="7" ry="5.5" fill="#3E3040"/>
+           <path d="M100 131 v6" stroke="#3E3040" stroke-width="3.4" stroke-linecap="round"/>
+           <path d="M100 137 q-9 9 -16 1" stroke="#3E3040" stroke-width="3.4" fill="none" stroke-linecap="round"/>
+           <path d="M100 137 q9 9 16 1" stroke="#3E3040" stroke-width="3.4" fill="none" stroke-linecap="round"/>`
+  })
+};
+
+/* ==================================================
+   二、结果类型定义
+   ================================================== */
+const TYPES = {
+  cat: {
+    name:'奶猫系', full:'奶猫系 · 黏人精本精', tag:'需要抱抱',
+    color:'#FFB3C6', soft:'#FFE6ED',
+    slogan:'「你在，我就在。」',
+    desc:'你的喜欢是毛茸茸、明晃晃的那种。开心了想第一时间分享，难过了也想马上被抱抱。在感情里你不太会掩饰情绪，喜欢就表现出来，也期待对方一样坦白。',
+    traits:['消息秒回选手','情绪写在脸上','需要被明确回应','撒娇是本能'],
+    light:'你让人感到被需要、被信任。和你在一起，对方很容易觉得自己很重要，这种毫不含糊的真诚，是很多人求都求不来的。',
+    shadow:'一旦对方回应慢半拍，你就容易开始自我怀疑，在心里把「他是不是没那么喜欢我」演上十遍。',
+    advice:'把撒娇当成感情的调味，而不是唯一的沟通方式。当你也能稳稳站在自己的世界里，你的黏人会变得格外可爱。',
+    share:'我的恋爱人格是奶猫系：你在，我就在。'
+  },
+  fox: {
+    name:'狐狸系', full:'狐狸系 · 心机小钓手', tag:'节奏大师',
+    color:'#FFAE7E', soft:'#FFEADF',
+    slogan:'「我不是不主动，我是在等你主动。」',
+    desc:'你很懂恋爱的节奏感，什么时候回消息、什么时候示弱、什么时候退一步，你心里门儿清。你不是不在意，只是你更愿意把主动权握在手里，让关系慢慢升温。',
+    traits:['擅长留白','会制造小悬念','懂氛围感','不轻易先低头'],
+    light:'你有分寸、有情趣，能把平淡的相处过得有点小心跳。和你在一起，对方总会好奇你下一步在想什么。',
+    shadow:'太会控制节奏，容易让对方误以为你不够认真；而你自己也常常因为「不肯先开口」错过一些时机。',
+    advice:'偶尔卸下技巧，直接说一句「我其实很在意你」，杀伤力比任何套路都大。',
+    share:'我的恋爱人格是狐狸系：我等的不是消息，是你先开口。'
+  },
+  dog: {
+    name:'金毛系', full:'金毛系 · 直球忠犬', tag:'心动直球',
+    color:'#FFCB6B', soft:'#FFF1D6',
+    slogan:'「喜欢就大声说，藏着多累啊。」',
+    desc:'你的爱是透明的，喜欢就会主动，想念就会说出来。你不擅长猜来猜去，也不想让对方猜你。在你看来，感情最舒服的状态就是：我对你好，你也大大方方地接住。',
+    traits:['主动出击','真诚到发光','行动力满分','讨厌暧昧拉扯'],
+    light:'你给的安全感是实打实的。对方不用猜你在想什么，这种坦荡在感情里非常稀缺。',
+    shadow:'容易一次性投入太多，忘了先确认对方是不是和你走在同一条速度上。',
+    advice:'直球很好，但也留一点「先问一句」的耐心。你的热烈值得给到同样接得住的人。',
+    share:'我的恋爱人格是金毛系：喜欢就直说，绕弯子太累了。'
+  },
+  hedgehog: {
+    name:'刺猬系', full:'刺猬系 · 慢热防御型', tag:'先观察一下',
+    color:'#BFA4E8', soft:'#EEE7FB',
+    slogan:'「我先看看，再决定要不要把刺放下。」',
+    desc:'你不是冷淡，你只是习惯先保护自己。你会用很长时间观察一个人，确认他靠得住，才愿意露出柔软的部分。别人以为你不在乎，其实你心里已经翻了好几页。',
+    traits:['观察期很长','需要个人空间','在意但不说','一旦信任就很拼'],
+    light:'你非常可靠。一旦认定一个人，你会给出远超预期的忠诚和耐心，那是被你筛过之后的真心。',
+    shadow:'沉默和试探，常常被误解成「不够喜欢」，于是你在保护自己的同时，也把可能的机会推远了。',
+    advice:'把「我需要一点时间」说出口，比什么都不说有用得多。你的刺是软的，值得被看见。',
+    share:'我的恋爱人格是刺猬系：我的刺是软的，只是要先确认安全。'
+  },
+  sloth: {
+    name:'树懒系', full:'树懒系 · 佛系随缘', tag:'不急不躁',
+    color:'#C9AA85', soft:'#F3EADF',
+    slogan:'「有也行，没有也行，先睡一觉。」',
+    desc:'你对恋爱没有太多紧迫感。喜欢一个人也不会急着表态，更不会为了脱单而随便开始。你相信合适的人自然会来，不合适的人再努力也没用。',
+    traits:['情绪很稳','不追不抢','讨厌被催促','享受自己的节奏'],
+    light:'和你相处没有压力。你的松弛感会让人放下防备，觉得感情可以是一件轻松的事。',
+    shadow:'太随缘，容易被更主动的人挤到后面；有时候不是没有缘分，只是你没有往前走一步。',
+    advice:'偶尔主动一次，哪怕只是一句「最近在忙什么」，都会让对方记很久。',
+    share:'我的恋爱人格是树懒系：不急，好的关系本来就不用赶。'
+  },
+  peacock: {
+    name:'孔雀系', full:'孔雀系 · 恋爱显眼包', tag:'爱要秀出来',
+    color:'#8FD3E8', soft:'#E3F5FB',
+    slogan:'「谈恋爱不秀，等于没谈。」',
+    desc:'你的喜欢是彩色的。你会为每一次约会设计仪式感，会把对方介绍给所有朋友，也希望这段关系被世界看见。对你来说，恋爱本身就该是一件闪闪发光的事。',
+    traits:['仪式感狂魔','爱分享日常','会制造惊喜','在意氛围感'],
+    light:'你能把关系过得很有气氛。纪念日、小惊喜、随手记录的瞬间，都是你为感情加的糖。',
+    shadow:'有时候你会更在意「看起来怎么样」，而忽略了两个人私下里真正舒不舒服。',
+    advice:'留一些只属于你们的秘密瞬间。被看见很好，被懂得更好。',
+    share:'我的恋爱人格是孔雀系：喜欢一个人，是藏不住的。'
+  },
+  owl: {
+    name:'猫头鹰系', full:'猫头鹰系 · 恋爱分析师', tag:'先捋清逻辑',
+    color:'#A9B6E8', soft:'#E8ECFB',
+    slogan:'「先别心动，我们把逻辑捋清楚。」',
+    desc:'你习惯先观察、再靠近。对方的一句话、一个表情，你都会默默记下来分析。你不想被情绪牵着走，所以在心动之前，你更想先确认这个人值不值得。',
+    traits:['习惯复盘关系','理性优先','想得很多','不容易被话术骗'],
+    light:'你很有判断力，不容易在感情里被带偏，也很懂得保护自己。别人晕头转向的时候，你还能保持清醒。',
+    shadow:'分析得太多，反而容易错过当下的心动。有些事情，是想不明白、只能去感受的。',
+    advice:'允许自己偶尔「不聪明」一次。喜欢这件事，本来就不需要完整证据链。',
+    share:'我的恋爱人格是猫头鹰系：心动可以，但我要先看完证据。'
+  },
+  bee: {
+    name:'蜜蜂系', full:'蜜蜂系 · 付出型忙碌者', tag:'我来安排',
+    color:'#FFD95E', soft:'#FFF7D9',
+    slogan:'「你不用说，我都已经做好了。」',
+    desc:'你表达爱的方式是操心。记得对方的忌口，安排好约会路线，提前想好下雨天的备选方案。你不擅长说漂亮话，但你做的每一件小事都在说「我在意你」。',
+    traits:['很会照顾人','细节控','喜欢安排一切','不太会开口要'],
+    light:'你踏实又贴心，是那种相处越久越离不开的人。你的爱具体、可见、有重量。',
+    shadow:'付出太多又不吭声，最后委屈的往往是你自己。你会默默期待对方察觉，但他可能真的没注意。',
+    advice:'学会开口要。爱不是单向劳动，让对方也为你做点什么，关系才会更稳。',
+    share:'我的恋爱人格是蜜蜂系：我把喜欢都做成了具体的事。'
+  },
+  penguin: {
+    name:'企鹅系', full:'企鹅系 · 长情党', tag:'认定了就不换',
+    color:'#8FA9BD', soft:'#E7EEF4',
+    slogan:'「我认定了，就不太想换人了。」',
+    desc:'你对待感情认真且长情。一旦把某个人放进心里，就会开始默默规划很远的以后。你不喜欢轻易开始，更不喜欢轻易结束，承诺对你来说分量很重。',
+    traits:['专一且稳定','记得所有小事','重视承诺','念旧'],
+    light:'你能给人一种归属感。和你在一起，对方会觉得这段关系是有未来的，而不是一场随时会结束的游戏。',
+    shadow:'有时候你会太早锁定一个人，把「坚持」当成美德，却忽略了这段关系本身是否合适。',
+    advice:'长情是优点，但也别忘了持续观察。值得的人，才配得上你的固执。',
+    share:'我的恋爱人格是企鹅系：认定一个人，是我最浪漫的固执。'
+  },
+  wolf: {
+    name:'狼系', full:'狼系 · 独占欲强者', tag:'护短第一名',
+    color:'#A39CBF', soft:'#ECE9F5',
+    slogan:'「别人可以喜欢他，但他得是我的。」',
+    desc:'你的感情浓度很高。喜欢一个人就会全情投入，也会忍不住想护着他、管着他、把他圈在自己的世界里。你不是小气，只是你表达在意的方式，天生带着一点攻击性。',
+    traits:['爱得浓烈','保护欲强','容易吃醋','嘴上凶心里软'],
+    light:'你很有担当。真出事的时候你会第一个站出来，站在他前面。这种「我罩着你」的感觉，非常让人心动。',
+    shadow:'独占欲一旦过头，就容易变成控制。对方可能会因为喘不过气，而慢慢往后退。',
+    advice:'把「我要你」换成「我需要你」。前者是占有，后者是撒娇，效果差很多。',
+    share:'我的恋爱人格是狼系：我护短，也护你。'
+  }
+};
+
+const ORDER = ['cat','fox','dog','hedgehog','sloth','peacock','owl','bee','penguin','wolf'];
+
+/* ==================================================
+   三、题目与计分（15 题 × 4 选项）
+   ================================================== */
+const QUESTIONS = [
+  { q:'喜欢的人深夜发来一句「在吗」，你的第一反应是——',
+    options:[
+      { t:'秒回，还顺手发一个表情包过去', s:{cat:2, dog:1, bee:1} },
+      { t:'先看一眼时间，想想他为什么这时候发', s:{owl:2, hedgehog:1, fox:1} },
+      { t:'等几分钟再回，留一点悬念', s:{fox:2, peacock:1, wolf:1} },
+      { t:'直接问「怎么了？出什么事了吗」', s:{dog:2, bee:1, penguin:1} }
+    ]},
+
+  { q:'恋爱里，你最受不了对方哪一点？',
+    options:[
+      { t:'忽冷忽热，让人猜不透', s:{cat:2, wolf:1, penguin:1} },
+      { t:'不主动，什么都等着你来安排', s:{bee:2, dog:1, peacock:1} },
+      { t:'太黏人，一点个人空间都不给', s:{hedgehog:2, sloth:1, owl:1} },
+      { t:'在外人面前不给你面子', s:{peacock:2, fox:1, wolf:1} }
+    ]},
+
+  { q:'约会前一小时，对方说「临时有事」，你会——',
+    options:[
+      { t:'说「没关系」，然后自己去看场电影', s:{sloth:2, hedgehog:1, owl:1} },
+      { t:'嘴上说没事，心里默默记上一笔', s:{wolf:2, penguin:1, cat:1} },
+      { t:'直接问清楚：是不是不想来了', s:{dog:2, cat:1, bee:1} },
+      { t:'「那我可要约别人咯」，逗他一下', s:{fox:2, peacock:1, sloth:1} }
+    ]},
+
+  { q:'你的手机相册里，占内存最多的是——',
+    options:[
+      { t:'和对方的聊天截图', s:{penguin:2, cat:1, bee:1} },
+      { t:'自己的自拍和好看的照片', s:{peacock:2, fox:1, dog:1} },
+      { t:'风景、咖啡、路边的小猫小狗', s:{sloth:2, owl:1, hedgehog:1} },
+      { t:'两个人的合照和各种纪念日', s:{bee:2, penguin:1, dog:1} }
+    ]},
+
+  { q:'对方三天没主动找你，你会——',
+    options:[
+      { t:'也不找他，看谁先忍不住', s:{hedgehog:2, fox:1, wolf:1} },
+      { t:'找个自然点的借口发条消息', s:{cat:2, bee:1, penguin:1} },
+      { t:'直接问「你最近是不是很忙」', s:{dog:2, owl:1, cat:1} },
+      { t:'发一条朋友圈，让他自己来找你', s:{peacock:2, fox:1, wolf:1} }
+    ]},
+
+  { q:'朋友问你「你们到底算什么关系」，你一般——',
+    options:[
+      { t:'说「就那样吧，挺好的」', s:{sloth:2, hedgehog:1, owl:1} },
+      { t:'笑得停不下来，能讲半小时', s:{peacock:2, bee:1, dog:1} },
+      { t:'冷静分析：「还在观察期。」', s:{owl:2, hedgehog:1, wolf:1} },
+      { t:'直接说「我的人，别惦记」', s:{wolf:2, dog:1, penguin:1} }
+    ]},
+
+  { q:'恋爱里你最容易做的「傻事」是——',
+    options:[
+      { t:'反复翻聊天记录，找细节', s:{owl:2, cat:1, penguin:1} },
+      { t:'为了对方推掉自己的安排', s:{bee:2, dog:1, cat:1} },
+      { t:'明明很在意，却装作无所谓', s:{hedgehog:2, wolf:1, fox:1} },
+      { t:'把对方介绍给所有朋友认识', s:{peacock:2, dog:1, penguin:1} }
+    ]},
+
+  { q:'吵完架，你更可能是——',
+    options:[
+      { t:'先冷静一下，第二天再好好谈', s:{owl:2, sloth:1, hedgehog:1} },
+      { t:'憋不住，当场就要说清楚', s:{dog:2, cat:1, bee:1} },
+      { t:'不吵，但会冷淡一阵子', s:{wolf:2, hedgehog:1, penguin:1} },
+      { t:'撒个娇或者开个玩笑把气氛化掉', s:{fox:2, cat:1, peacock:1} }
+    ]},
+
+  { q:'理想中的周末是——',
+    options:[
+      { t:'两个人在家，各玩各的也很安心', s:{sloth:2, cat:1, penguin:1} },
+      { t:'出门打卡拍照，把周末过成海报', s:{peacock:2, fox:1, dog:1} },
+      { t:'一起做顿饭，把冰箱塞满', s:{bee:2, penguin:1, dog:1} },
+      { t:'去人少的地方散步，聊点深的话题', s:{owl:2, hedgehog:1, wolf:1} }
+    ]},
+
+  { q:'对方夸你「你今天真好看」，你会——',
+    options:[
+      { t:'大方接受：「我知道呀。」', s:{peacock:2, fox:1, dog:1} },
+      { t:'有点害羞，反问「真的吗」', s:{cat:2, hedgehog:1, penguin:1} },
+      { t:'立刻夸回去，气氛不能尬', s:{dog:2, bee:1, fox:1} },
+      { t:'心里偷偷记下来，回家开心一整晚', s:{penguin:2, owl:1, cat:1} }
+    ]},
+
+  { q:'你更相信哪一种「喜欢」——',
+    options:[
+      { t:'天天见面、随时报备的那种', s:{cat:2, dog:1, bee:1} },
+      { t:'关键时刻一定会出现的那种', s:{penguin:2, wolf:1, dog:1} },
+      { t:'不用说话也懂彼此的那种', s:{owl:2, hedgehog:1, sloth:1} },
+      { t:'让人心跳加速、忍不住想靠近的那种', s:{fox:2, peacock:1, wolf:1} }
+    ]},
+
+  { q:'关于恋爱里的「边界感」，你更认同——',
+    options:[
+      { t:'相爱就该共享一切', s:{cat:2, bee:1, penguin:1} },
+      { t:'各自有空间，也要有交集', s:{owl:2, sloth:1, dog:1} },
+      { t:'我的圈子，他最好别插手太多', s:{hedgehog:2, wolf:1, fox:1} },
+      { t:'一起社交才热闹，我乐意带着他', s:{peacock:2, bee:1, dog:1} }
+    ]},
+
+  { q:'如果只能保留一个恋爱习惯，你选——',
+    options:[
+      { t:'每天说晚安', s:{penguin:2, cat:1, bee:1} },
+      { t:'随手拍给对方看', s:{dog:2, peacock:1, bee:1} },
+      { t:'定期复盘一下我们的关系', s:{owl:2, wolf:1, hedgehog:1} },
+      { t:'保持一点小神秘', s:{fox:2, peacock:1, sloth:1} }
+    ]},
+
+  { q:'你最容易被哪一种瞬间击中——',
+    options:[
+      { t:'他记得你随口说过的一句话', s:{penguin:2, owl:1, bee:1} },
+      { t:'人群里他只看着你', s:{peacock:2, wolf:1, cat:1} },
+      { t:'他笨拙但特别认真地对你好', s:{dog:2, bee:1, penguin:1} },
+      { t:'他偶尔露出「只对你才有的样子」', s:{fox:2, cat:1, hedgehog:1} }
+    ]},
+
+  { q:'恋爱中，你最怕自己变成——',
+    options:[
+      { t:'太黏人，最后失去自己', s:{owl:2, hedgehog:1, sloth:1} },
+      { t:'太被动，把对方等丢了', s:{dog:2, bee:1, cat:1} },
+      { t:'太用力，反而把人吓跑', s:{wolf:2, bee:1, penguin:1} },
+      { t:'太冷静，看起来不够喜欢', s:{sloth:2, fox:1, peacock:1} }
+    ]}
+];
+
+/* ==================================================
+   四、状态与工具
+   ================================================== */
+const TOTAL = QUESTIONS.length;
+const state = { index: 0, answers: new Array(TOTAL).fill(null), result: null };
+let navLock = false;
+
+const $ = id => document.getElementById(id);
+
+function toast(msg){
+  const el = $('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.classList.remove('show'), 2300);
+}
+
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  $(id).classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ==================================================
+   五、答题逻辑
+   ================================================== */
+function renderQuestion(){
+  const q = QUESTIONS[state.index];
+  $('q-index').textContent = 'Q' + (state.index + 1);
+  $('q-title').textContent = q.q;
+  $('cur-num').textContent = state.index + 1;
+  $('total-num').textContent = TOTAL;
+  $('progress-fill').style.width = (((state.index + 1) / TOTAL) * 100) + '%';
+
+  const box = $('options');
+  box.innerHTML = '';
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'option' + (state.answers[state.index] === i ? ' selected' : '');
+    btn.innerHTML = '<span class="bullet">' + 'ABCD'[i] + '</span><span class="opt-text">' + opt.t + '</span>';
+    btn.addEventListener('click', () => selectOption(i));
+    box.appendChild(btn);
+  });
+
+  const next = $('btn-next');
+  next.textContent = state.index === TOTAL - 1 ? '查看结果' : '下一题';
+  next.disabled = state.answers[state.index] === null;
+  $('btn-prev').disabled = state.index === 0;
+  $('btn-prev').style.opacity = state.index === 0 ? '.38' : '1';
+}
+
+function selectOption(i){
+  state.answers[state.index] = i;
+  document.querySelectorAll('#options .option').forEach((el, idx) => {
+    el.classList.toggle('selected', idx === i);
+  });
+  $('btn-next').disabled = false;
+  $('btn-next').textContent = state.index === TOTAL - 1 ? '查看结果' : '下一题';
+}
+
+/* 计分：累加所有选项分值，平局按固定优先级裁决（可复现） */
+function computeResult(){
+  const scores = {};
+  ORDER.forEach(k => scores[k] = 0);
+
+  state.answers.forEach((ansIdx, qi) => {
+    if (ansIdx === null) return;
+    const s = QUESTIONS[qi].options[ansIdx].s;
+    for (const k in s) {
+      if (scores[k] === undefined) scores[k] = 0;
+      scores[k] += s[k];
+    }
+  });
+
+  let best = ORDER[0], bestScore = -1;
+  ORDER.forEach(k => {
+    if (scores[k] > bestScore) { bestScore = scores[k]; best = k; }
+  });
+  return best;
+}
+
+function finish(){
+  if (state.answers.some(a => a === null)) {
+    toast('还有题目没有作答哦～');
+    return;
+  }
+  state.result = computeResult();
+  renderResult(state.result);
+  showPage('result');
+}
+
+/* ==================================================
+   六、结果渲染
+   ================================================== */
+function renderResult(key){
+  const t = TYPES[key];
+  const res = $('result');
+  res.style.setProperty('--accent', t.color);
+  res.style.setProperty('--accent-soft', t.soft);
+
+  $('result-animal').innerHTML = SVGS[key];
+  $('result-badge').textContent = t.tag;
+  $('result-name').textContent = t.full;
+  $('result-slogan').textContent = t.slogan;
+  $('result-desc').textContent = t.desc;
+  $('result-light').textContent = t.light;
+  $('result-shadow').textContent = t.shadow;
+  $('result-advice').textContent = t.advice;
+  $('result-traits').innerHTML = t.traits.map(x => '<span class="chip">' + x + '</span>').join('');
+}
+
+/* ==================================================
+   七、结果卡片绘制
+   ================================================== */
+const FONT_STACK = '"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif';
+
+function roundRect(ctx, x, y, w, h, r){
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function wrapText(ctx, text, maxW){
+  const chars = Array.from(text);
+  const lines = [];
+  let line = '';
+  for (const ch of chars) {
+    if (ch === '\n') { if (line) lines.push(line); line = ''; continue; }
+    const test = line + ch;
+    if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = ch; }
+    else line = test;
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+function fitFont(ctx, text, maxW, size, weight){
+  let s = size;
+  ctx.font = weight + ' ' + s + 'px ' + FONT_STACK;
+  while (ctx.measureText(text).width > maxW && s > 28) {
+    s -= 2;
+    ctx.font = weight + ' ' + s + 'px ' + FONT_STACK;
+  }
+  return s;
+}
+
+function svgToImage(svg){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+  });
+}
+
+async function generateCard(){
+  const t = TYPES[state.result];
+  const W = 1080, H = 1440;
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  /* 背景 */
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, t.soft);
+  bg.addColorStop(0.55, '#FFFFFF');
+  bg.addColorStop(1, t.soft);
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  /* 背景圆点装饰 */
+  ctx.globalAlpha = 0.35;
+  ctx.fillStyle = t.color;
+  [[120,180,10],[960,140,7],[80,1300,8],[1000,1250,11],[540,56,6],
+   [120,760,5],[980,820,6],[200,1420,7],[880,1420,5],[70,470,6],[1010,520,8]]
+    .forEach(p => { ctx.beginPath(); ctx.arc(p[0], p[1], p[2], 0, Math.PI * 2); ctx.fill(); });
+  ctx.globalAlpha = 1;
+
+  /* 主卡片 */
+  ctx.save();
+  ctx.shadowColor = 'rgba(120,80,110,0.13)';
+  ctx.shadowBlur = 60;
+  ctx.shadowOffsetY = 20;
+  ctx.fillStyle = '#FFFFFF';
+  roundRect(ctx, 64, 64, W - 128, H - 128, 64);
+  ctx.fill();
+  ctx.restore();
+
+  /* 顶部色块 */
+  ctx.save();
+  roundRect(ctx, 64, 64, W - 128, 600, 64);
+  ctx.clip();
+  const g2 = ctx.createLinearGradient(64, 64, W - 64, 664);
+  g2.addColorStop(0, t.color);
+  g2.addColorStop(1, t.soft);
+  ctx.fillStyle = g2;
+  ctx.fillRect(64, 64, W - 128, 600);
+  ctx.restore();
+
+  /* 插画 */
+  try {
+    const img = await svgToImage(SVGS[t.key]);
+    ctx.drawImage(img, 310, 120, 460, 460);
+  } catch (e) {
+    /* 插画加载失败时不影响文字卡片 */
+  }
+
+  /* 结果名称 */
+  const nameSize = fitFont(ctx, t.full, 860, 72, '700');
+  ctx.font = '700 ' + nameSize + 'px ' + FONT_STACK;
+  ctx.fillStyle = '#3E3040';
+  ctx.textAlign = 'center';
+  ctx.fillText(t.full, W / 2, 762);
+
+  /* 标签胶囊 */
+  ctx.font = '700 30px ' + FONT_STACK;
+  const tagW = ctx.measureText(t.tag).width + 68;
+  roundRect(ctx, W / 2 - tagW / 2, 800, tagW, 62, 31);
+  ctx.fillStyle = t.soft;
+  ctx.fill();
+  ctx.fillStyle = '#7A6A76';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(t.tag, W / 2, 833);
+  ctx.textBaseline = 'alphabetic';
+
+  /* 代表文案 */
+  ctx.font = '600 40px ' + FONT_STACK;
+  ctx.fillStyle = '#5A4A56';
+  const lines = wrapText(ctx, t.slogan, 800);
+  lines.forEach((ln, i) => ctx.fillText(ln, W / 2, 960 + i * 60));
+
+  /* 分隔线 */
+  ctx.strokeStyle = t.color;
+  ctx.globalAlpha = 0.5;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(W / 2 - 110, 1128);
+  ctx.lineTo(W / 2 + 110, 1128);
+  ctx.stroke();
+  ctx.globalAlpha = 1;
+
+  /* 分享短文案 */
+  ctx.font = '600 32px ' + FONT_STACK;
+  ctx.fillStyle = '#7A6A76';
+  const sl = wrapText(ctx, t.share, 780);
+  sl.slice(0, 2).forEach((ln, i) => ctx.fillText(ln, W / 2, 1198 + i * 50));
+
+  /* 页脚 */
+  ctx.font = '500 26px ' + FONT_STACK;
+  ctx.fillStyle = '#BCAEB8';
+  ctx.fillText('恋爱小动物图鉴 · 你是哪只恋爱小动物？', W / 2, 1310);
+
+  return canvas;
+}
+
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) ||
+  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+function showModal(src, tip){
+  $('modal-img').src = src;
+  $('modal-tip').textContent = tip || '长按图片，选择「保存图片」即可保存到相册';
+  $('modal').classList.add('show');
+}
+
+async function saveCard(){
+  const btn = $('btn-save');
+  btn.disabled = true;
+  btn.textContent = '正在生成…';
+  try {
+    const canvas = await generateCard();
+    const dataUrl = canvas.toDataURL('image/png');
+
+    if (isIOS) {
+      showModal(dataUrl, '长按上面的图片，选择「存储到照片」即可保存');
+      return;
+    }
+
+    canvas.toBlob(blob => {
+      if (!blob) {
+        showModal(dataUrl, '长按图片即可保存到本地');
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = '恋爱小动物_' + TYPES[state.result].name + '.png';
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 5000);
+      toast('卡片已保存到下载文件夹');
+    }, 'image/png');
+  } catch (e) {
+    console.error(e);
+    toast('生成失败，可以直接截图保存～');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '保存结果卡片';
+  }
+}
+
+/* ==================================================
+   八、分享
+   ================================================== */
+async function copyText(str){
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(str);
+      return true;
+    }
+  } catch (e) { /* 继续走降级方案 */ }
+
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = str;
+    ta.style.position = 'fixed';
+    ta.style.top = '-1000px';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    const ok = document.execCommand('copy');
+    ta.remove();
+    return ok;
+  } catch (e) {
+    return false;
+  }
+}
+
+async function shareResult(){
+  const t = TYPES[state.result];
+  const url = location.href.split('#')[0];
+  const text = '我的恋爱人格是「' + t.full + '」\n' + t.slogan + '\n' + t.share;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: '恋爱小动物图鉴', text: text, url: url });
+      return;
+    } catch (e) {
+      if (e && e.name === 'AbortError') return;
+      /* 其他错误继续降级 */
+    }
+  }
+
+  const ok = await copyText(text + '\n' + url);
+  if (ok) {
+    toast('文案和链接已复制，去粘贴给朋友吧～');
+  } else {
+    toast('复制失败，请手动复制浏览器地址栏链接');
+  }
+}
+
+/* ==================================================
+   九、事件绑定与初始化
+   ================================================== */
+$('hero-a1').innerHTML = SVGS.cat;
+$('hero-a2').innerHTML = SVGS.fox;
+$('hero-a3').innerHTML = SVGS.dog;
+
+$('btn-start').addEventListener('click', () => {
+  state.index = 0;
+  state.answers = new Array(TOTAL).fill(null);
+  state.result = null;
+  renderQuestion();
+  showPage('quiz');
+});
+
+$('btn-home').addEventListener('click', () => showPage('home'));
+$('btn-prev').addEventListener('click', () => {
+  if (state.index === 0) return;
+  state.index--;
+  renderQuestion();
+});
+
+$('btn-next').addEventListener('click', () => {
+  if (navLock) return;
+  if (state.answers[state.index] === null) return;
+
+  if (state.index === TOTAL - 1) { finish(); return; }
+
+  navLock = true;
+  state.index++;
+  renderQuestion();
+  setTimeout(() => { navLock = false; }, 240);
+});
+
+$('btn-retry').addEventListener('click', () => {
+  state.index = 0;
+  state.answers = new Array(TOTAL).fill(null);
+  state.result = null;
+  renderQuestion();
+  showPage('quiz');
+});
+
+$('btn-save').addEventListener('click', saveCard);
+$('btn-share').addEventListener('click', shareResult);
+$('modal-close').addEventListener('click', () => $('modal').classList.remove('show'));
+$('modal').addEventListener('click', e => {
+  if (e.target === $('modal')) $('modal').classList.remove('show');
+});
+
+/* 键盘支持（桌面端） */
+document.addEventListener('keydown', e => {
+  if (!$('quiz').classList.contains('active')) return;
+  const map = { '1':0, '2':1, '3':2, '4':3 };
+  if (e.key in map) selectOption(map[e.key]);
+  if (e.key === 'Enter') $('btn-next').click();
+});
+
+renderQuestion();
+</script>
+</body>
+</html>
